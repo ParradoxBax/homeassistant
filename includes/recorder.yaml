@@ -1,0 +1,3 @@
+  db_url: !secret db_link
+  purge_keep_days: 31
+  auto_purge: true

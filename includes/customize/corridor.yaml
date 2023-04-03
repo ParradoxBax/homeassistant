@@ -1,0 +1,12 @@
+
+
+## Коридор
+  
+light.yeelight_01_ceiling:
+  friendly_name: Люстра в коридоре входная
+
+light.yeelight_02_ceiling:
+  friendly_name: Люстра в коридоре центральная
+
+light.yeelight_03_ceiling:
+  friendly_name: Люстра в коридоре возле спальни

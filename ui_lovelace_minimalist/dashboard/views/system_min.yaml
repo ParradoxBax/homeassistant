@@ -1,0 +1,112 @@
+title: Система
+path: "system_min"
+cards:
+
+  - type: 'custom:button-card'
+    template: chip_back
+    variables:
+      ulm_chip_back_path: home
+  
+  - type: vertical-stack
+    cards:
+    - type: horizontal-stack
+      cards: 
+
+      - type: 'custom:button-card'
+        template: card_graph
+        variables:
+          ulm_card_graph_color: "var(--google-green)"
+          ulm_card_graph_name: CPU
+          ulm_card_graph_entity: sensor.processor_use
+          ulm_card_graph_type: fill
+          ulm_card_graph_hours: 24
+  
+      - type: 'custom:button-card'
+        template: card_graph
+        variables:
+          ulm_card_graph_color: "var(--google-green)"
+          ulm_card_graph_name: CPU Temp
+          ulm_card_graph_entity: sensor.processor_temperature
+          ulm_card_graph_type: fill
+          ulm_card_graph_hours: 24
+
+    - type: horizontal-stack
+      cards: 
+
+      - type: 'custom:button-card'
+        template: card_graph
+        variables:
+          ulm_card_graph_color: "var(--google-green)"
+          ulm_card_graph_name: Memory
+          ulm_card_graph_entity: sensor.memory_use_percent
+          ulm_card_graph_type: fill
+          ulm_card_graph_hours: 24
+  
+      - type: 'custom:button-card'
+        template: card_graph
+        variables:
+          ulm_card_graph_color: "var(--google-green)"
+          ulm_card_graph_name: MariaDB
+          ulm_card_graph_entity: sensor.maria_db_size
+          ulm_card_graph_type: fill
+          ulm_card_graph_hours: 24
+
+    - type: horizontal-stack
+      cards: 
+
+      - type: 'custom:button-card'
+        template: card_graph
+        variables:
+          ulm_card_graph_color: "var(--google-green)"
+          ulm_card_graph_name: SSD %
+          ulm_card_graph_entity: sensor.disk_use_percent
+          ulm_card_graph_type: fill
+          ulm_card_graph_hours: 24
+  
+      - type: 'custom:button-card'
+        template: card_graph
+        variables:
+          ulm_card_graph_color: "var(--google-green)"
+          ulm_card_graph_name: SSD Use
+          ulm_card_graph_entity: sensor.disk_free
+          ulm_card_graph_type: fill
+          ulm_card_graph_hours: 24
+        
+    - type: 'custom:button-card'
+      template: card_title
+      name: Google Backup
+
+    - type: horizontal-stack
+      cards: 
+      - type: 'custom:button-card'
+        template: card_generic_swap
+        entity: sensor.last_google_backup
+    - type: horizontal-stack
+      cards: 
+      - type: 'custom:button-card'
+        template: card_generic_swap
+        entity: sensor.backups_in_google_drive
+        name: Google Drive
+      - type: 'custom:button-card'
+        template: card_generic_swap
+        entity: sensor.backups_in_home_assistant
+        name: Home Assistant
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Интернет
+      
+    - type: horizontal-stack
+      cards: 
+
+      - type: horizontal-stack
+        cards: 
+        - type: 'custom:button-card'
+          template: card_generic_swap
+          entity: sensor.wan_ip
+          name: Wan_IP
+        - type: 'custom:button-card'
+          template: card_generic_swap
+          entity: binary_sensor.internet_state
+          name: Статус
+

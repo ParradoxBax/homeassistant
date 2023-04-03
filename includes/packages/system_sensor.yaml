@@ -1,0 +1,138 @@
+system_sensor:
+
+  homeassistant:
+    customize:
+
+      sensor.processor_temperature:
+        friendly_name: Температура CPU
+      sensor.processor_use:
+        friendly_name: Загрузка CPU
+        unit: '%'
+      sensor.memory_use_percent:
+        friendly_name: Загрузка ОЗУ
+        unit: '%'
+      sensor.disk_use_percent:
+        friendly_name: Диск заполнен
+        unit: '%'
+      sensor.disk_free:
+        friendly_name: Свободное место
+        unit: 'Гб'   
+      sensor.time:
+        friendly_name: Текущее время
+        icon: mdi:clock-outline
+      sensor.date:
+        friendly_name: Дата
+        icon: mdi:calendar-check-outline 
+      sensor.online_custom:
+        friendly_name: 'Время работы Home Assistant:'
+        icon: mdi:calendar-check-outline 
+      sensor.last_boot_custom:
+        friendly_name: 'Время работы Raspberry PI:'
+      sensor.maria_db_size:
+        friendly_name: Объем БД
+        icon: mdi:database
+        
+  binary_sensor:
+    - platform: ping
+      host: 8.8.8.8
+      name: internet_state
+      count: 2
+      scan_interval: 60
+
+  sensor:
+  
+    - platform: time_date
+      display_options:
+        - 'time'
+        - 'date'
+        - 'time_date'
+          
+    - platform: systemmonitor
+      resources:
+      - type: processor_use
+      - type: processor_temperature
+      - type: disk_use_percent
+        arg: /
+      - type: memory_use_percent
+      - type: last_boot
+      - type: disk_free
+        arg: /
+
+    - platform: rest
+      resource: http://ip.jsontest.com
+      name: "wan_ip"
+      scan_interval: 30
+      value_template: '{{ value_json.ip }}'
+        
+    - platform: sql
+      db_url: !secret db_link
+      queries:
+        - name: maria_db_size
+          query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1048576, 2) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
+          column: 'value'
+          unit_of_measurement: MB
+          
+    - platform: uptime
+      name: online
+
+  template:
+
+      - sensor:
+    # Время с последней перезагрузки сервера
+
+        - name: last_boot_custom
+          state: >
+              {% set uptime = as_timestamp (now()) -as_timestamp(states('sensor.last_boot')) | int %}
+              {% set minutes = (( uptime % 3600) / 60) | int %}
+              {% set hours = ((uptime % 86400) / 3600) | int %}
+              {% set days = (uptime / 86400) | int %}
+
+                {% if uptime < 60 %}
+                  Меньше минуты
+                {% else %}
+                  {% if days > 0 %}
+                    {{ days }} д.
+                  {% endif %}
+                  {% if hours > 0 %}
+                    {% if days > 0 %}
+                      {{ ' ' }}
+                    {% endif %}
+                    {{ hours }} ч.
+                  {% endif %}
+                  {% if minutes > 0 %}
+                    {% if days > 0 or hours > 0 %}
+                      {{ ' ' }}
+                    {% endif %}
+                      {{ minutes }} мин.
+                  {% endif %}
+                {% endif %}
+          icon: mdi:clock 
+
+          # Время с последней перезагрузки Home Assistant
+        - name: online_custom
+          state: >
+              {% set uptime = as_timestamp (now()) -as_timestamp(states('sensor.online')) | int %}
+              {% set minutes = (( uptime % 3600) / 60) | int %}
+              {% set hours = ((uptime % 86400) / 3600) | int %}
+              {% set days = (uptime / 86400) | int %}
+
+                {% if uptime < 60 %}
+                  Меньше минуты
+                {% else %}
+                  {% if days > 0 %}
+                    {{ days }} д.
+                  {% endif %}
+                  {% if hours > 0 %}
+                    {% if days > 0 %}
+                      {{ ' ' }}
+                    {% endif %}
+                    {{ hours }} ч.
+                  {% endif %}
+                  {% if minutes > 0 %}
+                    {% if days > 0 or hours > 0 %}
+                      {{ ' ' }}
+                    {% endif %}
+                      {{ minutes }} мин.
+                  {% endif %}
+                {% endif %}
+          icon: mdi:clock 

@@ -1,0 +1,53 @@
+title: Кухня
+icon: mdi:countertop-outline
+cards:
+
+  - type: custom:stack-in-card
+    mode: vertical 
+    cards:
+    - type: vertical-stack
+      cards:      
+        - type: vertical-stack
+          cards:
+          - type: horizontal-stack
+            cards:
+              - type: light
+                entity: light.yeelight_06_ceiling
+                name: Свет
+              - type: light
+                entity: light.yeelight_06_ceiling_ambilight
+                name: Ambilight
+              - type: light
+                entity: light.yeelight_06_ceiling_nightlight
+                name: Ночник
+        - type: entities
+          show_header_toggle: false
+          entities:
+          - entity: binary_sensor.kn_ceiling_unavailable 
+            name: Состояние люстры
+
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: picture-glance
+        show_name: false
+        camera_image: camera.xiaomi_cloud_map_extractor
+        entities:
+        - entity: input_button.vacuum_clean_kitchen
+          tap_action:
+            action: call-service
+            service: input_button.press
+            service_data:
+              entity_id: input_button.vacuum_clean_bedroom
+        - entity: input_button.vacuum_clean_kitchen_table
+          tap_action:
+            action: call-service
+            service: input_button.press
+            service_data:
+              entity_id: input_button.vacuum_clean_kitchen_table
+        - entity: script.vacuum_return_to_dock
+          tap_action:
+            action: call-service
+            service: script.turn_on
+            service_data:
+              entity_id: script.vacuum_return_to_dock

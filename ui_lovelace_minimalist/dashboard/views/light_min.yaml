@@ -1,0 +1,319 @@
+title: Свет
+path: "light_min"
+cards:
+
+  - type: 'custom:button-card'
+    template: chip_back
+    variables:
+      ulm_chip_back_path: home
+
+  - type: vertical-stack
+    cards:
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Коридор
+
+    # - type: 'custom:button-card'
+    #   template: card_title
+    #   name: Люстра 1
+      
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_01_ceiling
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_01_ceiling_nightlight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_force_background_color: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+    # - type: 'custom:button-card'
+    #   template: card_title
+    #   name: Люстра 2
+      
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_02_ceiling
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_02_ceiling_nightlight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_force_background_color: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+    # - type: 'custom:button-card'
+    #   template: card_title
+    #   name: Люстра 3
+      
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_03_ceiling
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_03_ceiling_nightlight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_force_background_color: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+  - type: vertical-stack
+    cards:
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Гостиная
+
+    - type: 'custom:button-card'
+      template: card_script
+      variables:
+        ulm_card_script_title: Гирлянда
+        ulm_card_script_icon: 'mdi:candle'
+      tap_action:
+        action: call-service
+        service: script.turn_on
+        service_data:
+          entity_id: script.garland_power_living
+
+    # - type: 'custom:button-card'
+    #   template: card_title
+    #   name: Люстра 1
+      
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_04_ceiling
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_04_ceiling_ambilight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_force_background_color: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ambilight
+
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_04_ceiling_nightlight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+    # - type: 'custom:button-card'
+    #   template: card_title
+    #   name: Люстра 2
+      
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_05_ceiling
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_05_ceiling_ambilight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_name: Ambilight
+
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_05_ceiling_nightlight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          # ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+
+    - type: vertical-stack
+      cards:
+
+      - type: 'custom:button-card'
+        template: card_title
+        name: Кухня
+      
+      - type: 'custom:button-card'
+        template: card_script
+        variables:
+          ulm_card_script_title: Гирлянда
+          ulm_card_script_icon: 'mdi:candle'
+        tap_action:
+          action: call-service
+          service: script.turn_on
+          service_data:
+            entity_id: script.garland_power_living
+      - type: horizontal-stack
+        cards:
+
+        - type: "custom:button-card"
+          template: card_light
+          entity: light.yeelight_06_ceiling
+          variables:
+            ulm_card_light_enable_slider: true
+            ulm_card_light_enable_color: true
+            ulm_card_light_force_background_color: true
+            ulm_card_light_enable_popup: true
+            # ulm_card_light_enable_collapse: true
+            ulm_card_light_name: Свет
+
+
+        - type: "custom:button-card"
+          template: card_light
+          entity: light.yeelight_06_ceiling_ambilight
+          variables:
+            ulm_card_light_enable_slider: true
+            ulm_card_light_enable_color: true
+            ulm_card_light_enable_popup: true
+            ulm_card_light_force_background_color: true
+            # ulm_card_light_enable_collapse: true
+            ulm_card_light_name: Ambilight
+
+    - type: horizontal-stack
+      cards:
+
+        - type: "custom:button-card"
+          template: card_light
+          entity: light.yeelight_06_ceiling_nightlight
+          variables:
+            ulm_card_light_enable_slider: true
+            ulm_card_light_enable_color: true
+            ulm_card_light_enable_popup: true
+            ulm_card_light_force_background_color: true
+            # ulm_card_light_enable_collapse: true
+            ulm_card_light_name: Ночник
+
+    - type: vertical-stack
+      cards:
+
+      - type: 'custom:button-card'
+        template: card_title
+        name: Спальня
+      
+      - type: horizontal-stack
+        cards:
+
+        - type: "custom:button-card"
+          template: card_light
+          entity: light.yeelight_07_ceiling
+          variables:
+            ulm_card_light_enable_slider: true
+            ulm_card_light_enable_color: true
+            ulm_card_light_force_background_color: true
+            ulm_card_light_enable_popup: true
+            # ulm_card_light_enable_collapse: true
+            ulm_card_light_name: Свет
+
+
+        - type: "custom:button-card"
+          template: card_light
+          entity: light.yeelight_07_ceiling_ambilight
+          variables:
+            ulm_card_light_enable_slider: true
+            ulm_card_light_enable_color: true
+            ulm_card_light_enable_popup: true
+            ulm_card_light_force_background_color: true
+            # ulm_card_light_enable_collapse: true
+            ulm_card_light_name: Ambilight
+
+    - type: horizontal-stack
+      cards:
+
+        - type: "custom:button-card"
+          template: card_light
+          entity: light.yeelight_07_ceiling_nightlight
+          variables:
+            ulm_card_light_enable_slider: true
+            ulm_card_light_enable_color: true
+            ulm_card_light_enable_popup: true
+            ulm_card_light_force_background_color: true
+            # ulm_card_light_enable_collapse: true
+            ulm_card_light_name: Ночник
+
+
+

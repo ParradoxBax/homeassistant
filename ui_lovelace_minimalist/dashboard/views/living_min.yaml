@@ -1,0 +1,251 @@
+title: Гостиная
+path: "living_min"
+cards:
+
+  - type: 'custom:button-card'
+    template: chip_back
+    variables:
+      ulm_chip_back_path: home
+
+
+  - type: "custom:button-card"
+    template:
+      - card_scenes
+    variables:
+      entity_1:
+        entity_id: "scene.notebook"
+        icon: "mdi:laptop"
+        icon_color: "green"
+        name: "Ноутбук"
+        bg_color: "green"
+      entity_2:
+        entity_id: "script.light_film_living"
+        icon: "mdi:video-vintage"
+        icon_color: "purple"
+        name: "Кино"
+        bg_color: "purple"
+      entity_3:
+        entity_id: "script.garland_power_living"
+        icon: "mdi:candelabra"
+        icon_color: "yellow"
+        name: "Гирлянда"
+        bg_color: "yellow"
+      # entity_4:
+      #   entity_id: "scene.YOUR_SCENE"
+      #   icon: "mdi:YOUR_ICON"
+      #   icon_color: "green"
+      #   name: "YOUR_NAME"
+      #   bg_color: "green"
+      # entity_5:
+      #   entity_id: "scene.YOUR_SCENE"
+      #   icon: "mdi:YOUR_ICON"
+      #   icon_color: "red"
+      #   name: "YOUR_NAME"
+      #   bg_color: "red"
+
+  - type: vertical-stack
+    cards:
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Музыка
+
+    - type: custom:mini-media-player
+      entity: media_player.yandex_station_u00hyg000qvrbk
+      icon: mdi:spotify
+      artwork: cover
+      sound_mode: full
+      hide:
+        # volume: true
+        source: true
+        power: true
+        power_state: true
+
+    - type: custom:stack-in-card
+      mode: vertical 
+      cards:
+      - type: custom:mini-media-player
+        entity: media_player.shield
+        icon: mdi:spotify
+        artwork: cover
+        hide:
+          volume: true
+          source: true
+
+
+      - type: custom:mini-media-player
+        entity: media_player.lg_webos_tv_oled65c1rla
+        icon: mdi:spotify
+        artwork: cover
+        toggle_power: false
+        shortcuts:
+          hide_when_off: true
+          columns: 2 # Max buttons per row
+          buttons:
+            # Start predefined playlist
+            - icon: mdi:sony-playstation
+              type: source
+              id: PlayStation # Where XXXXXXX is your User ID
+            - icon: mdi:android
+              type: source
+              id: SHIELD # Where XXXXXXX is your User ID
+        hide:
+          volume: true
+          source: true
+        power: true
+        power_state: true
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Свет
+
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.virtual_ceiling_living
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.virtual_ambilight_living
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_enable_collapse: true
+  
+    - type: vertical-stack
+      cards:
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.virtual_nightlight_living
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Люстра 1
+      
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_04_ceiling
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_04_ceiling_ambilight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ambilight
+
+    - type: vertical-stack
+      cards:
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_04_ceiling_nightlight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Люстра 2
+      
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_05_ceiling
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_05_ceiling_ambilight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_name: Ambilight
+
+    - type: vertical-stack
+      cards:
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_05_ceiling_nightlight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+  - type: 'custom:button-card'
+    template: card_title
+    name: Пылесос
+      
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: picture-glance
+        show_name: false
+        camera_image: camera.xiaomi_cloud_map_extractor
+        entities:
+        - entity: input_button.vacuum_clean_living_room
+          tap_action:
+            action: call-service
+            service: input_button.press
+            service_data:
+              entity_id: input_button.vacuum_clean_living_room
+        - entity: input_button.vacuum_clean_sofa
+          tap_action:
+            action: call-service
+            service: input_button.press
+            service_data:
+              entity_id: input_button.vacuum_clean_sofa
+        - entity: script.vacuum_return_to_dock
+          tap_action:
+            action: call-service
+            service: script.turn_on
+            service_data:
+              entity_id: script.vacuum_return_to_dock

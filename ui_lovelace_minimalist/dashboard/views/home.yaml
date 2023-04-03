@@ -1,0 +1,139 @@
+title: Главная
+path: "home"
+cards:
+  - type: vertical-stack
+    cards:
+
+    - type: "custom:button-card"
+      template: "card_esh_welcome"
+      triggers_update: "input_boolean.minimalist_dropdown"
+      variables:
+        ulm_card_esh_welcome_collapse: input_boolean.minimalist_dropdown
+        ulm_weather: weather.openweathermap
+        entity_1:
+          nav: "weather_min"
+          icon: "mdi:weather-partly-cloudy"
+          name: Погода
+          color: "blue"
+        entity_2:
+          nav: "system_min"
+          icon: "mdi:raspberry-pi"
+          name: "Pasp"
+          color: "green"
+        entity_3:
+          nav: "light_min"
+          icon: "mdi:lightbulb"
+          name: "Свет"
+          color: "yellow"
+        entity_4:
+          nav: "security"
+          icon: "mdi:shield"
+          name: Secure
+          color: "green"
+        # entity_5:
+        #   nav: "network"
+        #   icon: "mdi:flask"
+        #   name: Lab
+        #   color: "red"
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Комнаты
+
+    - type: horizontal-stack
+      cards:
+
+      - type: 'custom:button-card'
+        template:
+          - card_esh_room
+          - yellow_on
+        name: Коридор
+        entity: light.virtual_ceiling_cr
+        icon: mdi:floor-plan
+        tap_action:
+          action: navigate
+          navigation_path: 'coridor_min'
+        label: '[[[ return states["sensor.openweathermap_feels_like_temperature"].state + "°C" ]]]'
+
+      - type: 'custom:button-card'
+        template:
+          - card_esh_room
+          - yellow_on
+        name: Гостиная
+        entity: light.virtual_ceiling_living
+        icon: mdi:television
+        tap_action:
+          action: navigate
+          navigation_path: 'living_min'
+        label: '[[[ return states["sensor.openweathermap_feels_like_temperature"].state + "°C" ]]]'
+
+    - type: horizontal-stack
+      cards:
+
+      - type: 'custom:button-card'
+        template:
+          - card_esh_room
+          - yellow_on
+        name: Кухня
+        entity: light.yeelight_06_ceiling
+        icon: mdi:countertop-outline
+        tap_action:
+          action: navigate
+          navigation_path: 'kitchen_min'
+        label: '[[[ return states["sensor.openweathermap_feels_like_temperature"].state + "°C" ]]]'
+
+      - type: 'custom:button-card'
+        template:
+          - card_esh_room
+          - yellow_on
+        name: Спальня
+        entity: light.yeelight_07_ceiling
+        icon: mdi:bed-king-outline
+        tap_action:
+          action: navigate
+          navigation_path: 'bedroom_min'
+        label: '[[[ return states["sensor.openweathermap_feels_like_temperature"].state + "°C" ]]]'
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Устройства
+
+    - type: custom:mushroom-vacuum-card
+      entity: vacuum.roborock_vacuum_m1s
+      name: Пылесос
+      commands:
+        - start_pause
+        - stop
+        - locate
+        - return_home
+      tap_action:
+        action: navigate
+        navigation_path: vacuum_min
+      hold_action:
+        action: none
+      double_tap_action:
+        action: none
+
+  - type: custom:mini-media-player
+    entity: media_player.yandex_station_u00hyg000qvrbk
+    icon: mdi:spotify
+    artwork: cover
+    sound_mode: full
+    hide:
+      # volume: true
+      source: true
+      power: true
+      power_state: true
+      icon: true
+
+  - type: custom:mini-media-player
+    entity: media_player.shield
+    icon: mdi:spotify
+    artwork: cover
+    hide:
+      volume: true
+      source: true
+      power: false
+      power_state: false
+
+

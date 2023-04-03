@@ -1,0 +1,105 @@
+coridor:
+
+  light:
+    - platform: template
+      lights:
+############################################################# Люстры общее #############################################################
+
+        virtual_ceiling_cr:
+          friendly_name: "Светильник"
+          value_template: >-
+            {{  is_state('light.yeelight_01_ceiling', 'on')
+                and is_state('light.yeelight_02_ceiling', 'on')
+                and is_state('light.yeelight_03_ceiling', 'on')
+            }}
+          icon_template: >-
+            {% if is_state("light.virtual_ceiling_cr", "on") %}
+            mdi:ceiling-light
+            {% else %}
+            mdi:ceiling-light
+            {% endif %}
+          turn_on:
+          - service: light.turn_on
+            entity_id:
+            - light.yeelight_01_ceiling
+            - light.yeelight_02_ceiling
+            - light.yeelight_03_ceiling
+            data_template:
+              brightness_pct: 100
+              kelvin: 4500
+          turn_off:
+            service: light.turn_off
+            entity_id:
+            - light.yeelight_01_ceiling
+            - light.yeelight_02_ceiling
+            - light.yeelight_03_ceiling
+          level_template: >-
+              {{ state_attr('light.yeelight_01_ceiling', 'brightness') | int(0) }}
+          set_level:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_01_ceiling
+            - light.yeelight_02_ceiling
+            - light.yeelight_03_ceiling
+            data_template:
+              brightness: "{{ brightness }}"
+          temperature_template: >-
+              {{ state_attr('light.yeelight_01_ceiling', 'color_temp') | int(153) }}
+          set_temperature:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_01_ceiling
+            - light.yeelight_02_ceiling
+            - light.yeelight_03_ceiling
+            data_template:
+              color_temp: "{{ color_temp }}"
+          color_template: >-
+              {{ state_attr('light.yeelight_01_ceiling', 'hs_color') }}
+          set_color:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_01_ceiling
+            - light.yeelight_02_ceiling
+            - light.yeelight_03_ceiling
+            data_template:
+              hs_color: "[{{h}}, {{s}}]"
+
+############################################################# Люстры Ночник общий #############################################################
+
+        virtual_nightlight_cr:
+          friendly_name: "Ночник"
+          value_template: >-
+            {{  is_state('light.yeelight_01_ceiling_nightlight', 'on')
+                and is_state('light.yeelight_02_ceiling_nightlight', 'on')
+                and is_state('light.yeelight_02_ceiling_nightlight', 'on')
+            }}
+          icon_template: >-
+            {% if is_state("light.virtual_nightlight_cr", "on") %}
+            mdi:weather-night
+            {% else %}
+              mdi:weather-night
+            {% endif %}
+          turn_on:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_01_ceiling_nightlight
+            - light.yeelight_02_ceiling_nightlight
+            - light.yeelight_03_ceiling_nightlight
+            data_template:
+              brightness_pct: 100
+          turn_off:
+            service: light.turn_off
+            entity_id:
+            - light.yeelight_01_ceiling_nightlight
+            - light.yeelight_02_ceiling_nightlight
+            - light.yeelight_03_ceiling_nightlight
+          level_template: >-
+              {{ state_attr('light.yeelight_01_ceiling_nightlight', 'brightness') | int(0) }}
+          set_level:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_01_ceiling_nightlight
+            - light.yeelight_02_ceiling_nightlight
+            - light.yeelight_03_ceiling_nightlight
+            data_template:
+              brightness: "{{ brightness }}"

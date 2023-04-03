@@ -1,0 +1,540 @@
+living_room:
+
+  homeassistant:
+    customize:
+
+    light.yeelight_04_ceiling_ambilight:
+      friendly_name: Ambilight
+    light.yeelight_05_ceiling_ambilight:
+      friendly_name: Ambilight
+
+        
+  template:
+
+    - binary_sensor:
+
+      - name: lr_garland_power
+        state: >
+          {{ is_state('input_boolean.garland_power_living', 'on') }}
+        device_class: light
+        icon: >
+          {% if is_state("binary_sensor.lr_garland_power", "on") %}
+          mdi:ceiling-light
+          {% else %}
+          mdi:ceiling-light-outline
+          {% endif %}
+
+  script:
+  
+    light_film_living:
+      sequence:
+      - choose:
+    ############################################ Свет выключен ####################################
+        - conditions:
+          - condition: state
+            entity_id: 
+            - light.yeelight_04_ceiling
+            - light.yeelight_05_ceiling
+            state: 'off'
+          - condition: state
+            entity_id: 
+            - light.yeelight_04_ceiling_nightlight
+            - light.yeelight_05_ceiling_nightlight
+            state: 'off'
+          - condition: state
+            entity_id: 
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+            state: 'off'
+          sequence:
+          - service: light.turn_on
+            entity_id: 
+              - light.yeelight_04_ceiling_ambilight
+              - light.yeelight_05_ceiling_ambilight
+            data:
+              brightness_pct: 16
+              rgb_color: [191, 0, 255]
+    ############################################ Включена одна из ламп ####################################
+        - conditions:
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: 
+              - light.yeelight_04_ceiling
+              state: 'on'
+            - condition: state
+              entity_id: 
+              - light.yeelight_05_ceiling
+              state: 'on'
+          sequence:
+          - service: light.turn_off
+            entity_id: 
+              - light.yeelight_04_ceiling
+              - light.yeelight_05_ceiling
+          - service: light.turn_on
+            entity_id: 
+              - light.yeelight_04_ceiling_ambilight
+              - light.yeelight_05_ceiling_ambilight
+            data:
+              brightness_pct: 16
+              rgb_color: [191, 0, 255]
+    ############################################ Включен один из ночник ####################################
+        - conditions:
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: 
+              - light.yeelight_04_ceiling_nightlight
+              state: 'on'
+            - condition: state
+              entity_id: 
+              - light.yeelight_05_ceiling_nightlight
+              state: 'on'
+          sequence:
+          - service: light.turn_off
+            entity_id: 
+              - light.yeelight_04_ceiling_nightlight
+              - light.yeelight_05_ceiling_nightlight
+          - service: light.turn_on
+            entity_id: 
+              - light.yeelight_04_ceiling_ambilight
+              - light.yeelight_05_ceiling_ambilight
+            data:
+              brightness_pct: 16
+              rgb_color: [191, 0, 255]
+    ############################################ Подсветка включена ####################################
+        - conditions:
+          - condition: state
+            entity_id: 
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+            state: 'on'
+          sequence:
+          - service: light.turn_off
+            entity_id: 
+              - light.yeelight_04_ceiling_ambilight
+              - light.yeelight_05_ceiling_ambilight
+    ############################################ Одна подсветка выключена ####################################
+        - conditions:
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: 
+              - light.yeelight_04_ceiling_ambilight
+              state: 'on'
+            - condition: state
+              entity_id: 
+              - light.yeelight_05_ceiling_ambilight
+              state: 'on'
+          sequence:
+          - service: light.turn_on
+            entity_id: 
+              - light.yeelight_04_ceiling_ambilight
+              - light.yeelight_05_ceiling_ambilight
+            data:
+              brightness_pct: 16
+              rgb_color: [191, 0, 255]
+
+    garland_power_living:
+      alias: Гирлянда гостиная
+      sequence:
+      - service: light.turn_off
+        entity_id: 
+          - light.yeelight_04_ceiling
+          - light.yeelight_05_ceiling
+          - light.yeelight_04_ceiling_nightlight
+          - light.yeelight_05_ceiling_nightlight
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: "input_boolean.garland_power_living"
+            state: "off"
+          sequence:
+          - service: remote.send_command
+            target:
+              entity_id: remote.rm4_pro_remote
+            data:
+              device: garland
+              command: power_on
+          - service: input_boolean.turn_on
+            entity_id: input_boolean.garland_power_living
+        - conditions:
+          - condition: state
+            entity_id: input_boolean.garland_power_living
+            state: "on"
+          sequence:
+          - service: remote.send_command
+            target:
+              entity_id: remote.rm4_pro_remote
+            data:
+              device: garland
+              command: power_off
+          - service: input_boolean.turn_off
+            entity_id: input_boolean.garland_power_living
+        - conditions:
+          - condition: state
+            entity_id: 
+            - input_boolean.garland_power_living
+            - light.yeelight_04_ceiling
+            - light.yeelight_05_ceiling
+            state: "on"
+          sequence:
+          - service: light.turn_off
+            entity_id: 
+            - light.yeelight_04_ceiling
+            - light.yeelight_05_ceiling  
+
+        
+  light:
+    - platform: template
+      lights:
+############################################################# Ambilight общий #############################################################
+        virtual_ambilight_living:
+          friendly_name: "Ambilight"
+          value_template: >-
+            {{  is_state('light.yeelight_04_ceiling_ambilight', 'on')
+                and is_state('light.yeelight_05_ceiling_ambilight', 'on')
+            }}
+          icon_template: >-
+            {% if is_state("light.virtual_ambilight_living", "on") %}
+            mdi:radiobox-blank
+            {% else %}
+            mdi:radiobox-blank
+            {% endif %}
+          turn_on:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+            data_template:
+              brightness_pct: 100
+              rgb_color: [255, 128, 0]
+          turn_off:
+            service: light.turn_off
+            entity_id:
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+          level_template: >-
+              {{ state_attr('light.yeelight_04_ceiling_ambilight', 'brightness') | int(0) }}
+          set_level:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+            data_template:
+              brightness: "{{ brightness }}"
+          temperature_template: >-
+              {{ state_attr('light.yeelight_04_ceiling_ambilight', 'color_temp') | int(153) }}
+          set_temperature:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+            data_template:
+              color_temp: "{{ color_temp }}"
+          color_template: >-
+              {{ state_attr('light.yeelight_04_ceiling_ambilight', 'hs_color') }}
+          set_color:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+            data_template:
+              hs_color: "[{{h}}, {{s}}]"
+          effect_list_template: "{{ state_attr('light.yeelight_04_ceiling_ambilight', 'effect_list') }}"
+          effect_template: Stop
+          set_effect:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+            data_template:
+              effect: "{{ effect }}"
+############################################################# Люстры общее #############################################################
+        virtual_ceiling_living:
+          friendly_name: "Светильник"
+          value_template: >-
+            {{  is_state('light.yeelight_04_ceiling', 'on')
+                and is_state('light.yeelight_05_ceiling', 'on')
+            }}
+          icon_template: >-
+            {% if is_state("light.virtual_ceiling_living", "on") %}
+            mdi:ceiling-light
+            {% else %}
+            mdi:ceiling-light
+            {% endif %}
+          turn_on:
+          - service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling
+            - light.yeelight_05_ceiling
+            data_template:
+              brightness_pct: 100
+              kelvin: 4500
+          - service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_05_ceiling_ambilight
+            data_template:
+              brightness_pct: 100
+              rgb_color: [0, 0, 255]
+          turn_off:
+            service: light.turn_off
+            entity_id:
+            - light.yeelight_04_ceiling
+            - light.yeelight_05_ceiling
+          level_template: >-
+              {{ state_attr('light.yeelight_04_ceiling', 'brightness') | int(0) }}
+          set_level:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling
+            - light.yeelight_05_ceiling
+            data_template:
+              brightness: "{{ brightness }}"
+          temperature_template: >-
+              {{ state_attr('light.yeelight_04_ceiling', 'color_temp') | int(153) }}
+          set_temperature:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling
+            - light.yeelight_05_ceiling
+            data_template:
+              color_temp: "{{ color_temp }}"
+          color_template: >-
+              {{ state_attr('light.yeelight_04_ceiling', 'hs_color') }}
+          set_color:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling
+            - light.yeelight_05_ceiling
+            data_template:
+              hs_color: "[{{h}}, {{s}}]"
+
+############################################################# Люстры Ночник общий #############################################################
+
+        virtual_nightlight_living:
+          friendly_name: "Ночник"
+          value_template: >-
+            {{  is_state('light.yeelight_04_ceiling_nightlight', 'on')
+                and is_state('light.yeelight_05_ceiling_nightlight', 'on')
+            }}
+          icon_template: >-
+            {% if is_state("light.virtual_nightlight_living", "on") %}
+            mdi:weather-night
+            {% else %}
+              mdi:weather-night
+            {% endif %}
+          turn_on:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling_nightlight
+            - light.yeelight_05_ceiling_nightlight
+            data_template:
+              brightness_pct: 100
+          turn_off:
+            service: light.turn_off
+            entity_id:
+            - light.yeelight_04_ceiling_nightlight
+            - light.yeelight_05_ceiling_nightlight
+          level_template: >-
+              {{ state_attr('light.yeelight_04_ceiling_nightlight', 'brightness') | int(0) }}
+          set_level:
+            service: light.turn_on
+            entity_id:
+            - light.yeelight_04_ceiling_nightlight
+            - light.yeelight_05_ceiling_nightlight
+            data_template:
+              brightness: "{{ brightness }}"
+
+  automation:
+
+############################################################# Aqara Cube #############################################################
+
+  - id: Включение - выключение гирлянды
+    alias: light_garland_cube 
+    initial_state: true
+    trigger: 
+    - platform: state
+      entity_id: input_button.garland_power_living
+    - platform: state
+      entity_id: sensor.0x00158d0007724744_action
+      from: single_right
+    - platform: state
+      entity_id: sensor.0x00158d000530d942_action
+      to: flip180
+    action:
+    - service: script.turn_on
+      entity_id: script.garland_power_living
+
+  - id: Управление светом в гостиной Aqara Cube
+    alias: light_turn_off_cube
+    initial_state: true
+    trigger: 
+    - platform: state
+      entity_id: sensor.0x00158d000530d942_action
+      to: flip90
+    action:
+    - service: light.toggle
+      entity_id: 
+      - light.yeelight_04_ceiling
+      - light.yeelight_05_ceiling
+      data:
+        brightness_pct: 100
+        kelvin: 4500
+
+  - id: Изменить яркость в гостиной Aqara Cube
+    alias: change_brightness_cube
+    initial_state: true
+    trigger: 
+    - platform: state
+      entity_id: sensor.0x00158d000530d942_action
+    action:
+    - service: light.turn_on
+      entity_id:
+      - light.yeelight_04_ceiling_ambilight
+      - light.yeelight_05_ceiling_ambilight
+      data_template:
+        brightness: >
+          {%if trigger.to_state.state == 'rotate_right' %} 
+            {{ state_attr('light.virtual_ambilight_living', 'brightness') | int(0) + 33}}
+          {% else %}
+          {%if trigger.to_state.state == 'rotate_left' %} 
+            {{ state_attr('light.virtual_ambilight_living', 'brightness') | int(0) - 33}}
+          {% endif %}
+          {% endif %}        
+        rgb_color: [0, 0, 255]
+    - service: light.turn_on
+      entity_id:
+        - light.yeelight_04_ceiling
+        - light.yeelight_05_ceiling
+      data_template:
+        brightness: >
+          {%if trigger.to_state.state == 'rotate_right' %} 
+            {{ state_attr('light.virtual_ambilight_living', 'brightness') | int(0) + 33}}
+          {% else %}
+          {%if trigger.to_state.state == 'rotate_left' %} 
+            {{ state_attr('light.virtual_ambilight_living', 'brightness') | int(0) - 33}}
+          {% endif %}
+          {% endif %}
+        kelvin: 4500
+
+  - id: Подсветка у ноутбука
+    alias: light_work_cube
+    initial_state: true
+    trigger: 
+    - platform: state
+      entity_id: sensor.0x00158d000530d942_action
+      to: tap
+    action: 
+    - service: input_button.press
+      entity_id: input_button.light_work
+
+############################################################# Алиса #############################################################
+
+  - id: Включение гирлянды Алисой
+    alias: garland_living_room_turn_on_alice
+    initial_state: true
+    trigger:
+      - platform: event
+        event_type: yandex_intent
+        event_data:
+          text: Включи гирлянду  
+    action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.garland_power_living
+    - service: remote.send_command
+      target:
+        entity_id: remote.rm4_pro_remote
+      data:
+        device: garland
+        command: power_on
+    - service: light.turn_off
+      entity_id: 
+      - light.yeelight_04_ceiling
+      - light.yeelight_05_ceiling
+
+  - id: Выключение гирляды Алисой
+    alias: garland_turn_off_alice
+    initial_state: true
+    trigger:
+      - platform: event
+        event_type: yandex_intent
+        event_data:
+          text: Выключи гирлянду 
+    action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.garland_power_living
+    - service: remote.send_command
+      target:
+        entity_id: remote.rm4_pro_remote
+      data:
+        device: garland
+        command: power_off
+
+  - id: Включение подсветки кино Алисой
+    alias: light_film_ambilight_alice
+    initial_state: true
+    trigger:
+      - platform: event
+        event_type: yandex_intent
+        event_data:
+          text: Включи подсветку для кино  
+    action:
+    - service: light.turn_on
+      entity_id: 
+        - light.yeelight_04_ceiling_ambilight
+        - light.yeelight_05_ceiling_ambilight
+      data:
+        brightness_pct: 16
+        rgb_color: [255, 0, 255]
+
+
+  
+
+############################################################# Виртуальная кнопка #############################################################
+
+  - id: Включение подсветки кино 
+    alias: light_film_ambilight_input_button
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: input_button.light_film
+    - platform: state
+      entity_id: sensor.0x00158d0007724744_action
+      from: double_right
+    action:
+    - service: script.turn_on
+      entity_id: script.light_film_living
+
+
+  - id: Включение подсветки для работы
+    alias: light_work_ambilight_input_button
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: input_button.light_work
+    action:
+    - service: light.turn_off
+      entity_id:
+        - light.yeelight_04_ceiling
+        - light.yeelight_04_ceiling_nightlight
+    - service: light.toggle
+      entity_id: 
+        - light.yeelight_04_ceiling_ambilight
+      data:
+        brightness_pct: 35
+        rgb_color: [255, 0, 255]
+
+  - id: Включение света Aqara D1 
+    alias: light_aqara_d1
+    initial_state: true
+    trigger:
+    - platform: state
+      entity_id: sensor.0x00158d0007724744_action
+      from: single_left
+    action:
+    - service: light.toggle
+      entity_id:
+        - light.virtual_ceiling_living
+  

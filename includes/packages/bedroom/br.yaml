@@ -1,0 +1,96 @@
+######################## Спальня
+bedroom:
+  homeassistant:
+    customize:
+
+    binary_sensor.br_ceiling_unavailable:
+      friendly_name: Состояние люстры
+    input_button.vacuum_clean_bedroom:
+      friendly_name: Пропылесосить в спальне
+
+    devices:
+      192.168.1.53:
+        name: yeelight_07_ceiling
+        transition: 200
+        nightlight_switch_type: light
+        model: ceiling4
+
+  template:
+    - binary_sensor:
+        - name: br_ceiling_unavailable
+          state: >
+            {{ is_state('light.yeelight_07_ceiling', 'unavailable') }}
+          delay_on:
+            minutes: 3
+          device_class: problem
+          icon: >
+            {% if is_state("binary_sensor.br_ceiling_unavailable", "on") %}
+            mdi:ceiling-light-outline
+            {% else %}
+            mdi:ceiling-light
+            {% endif %}
+
+  automation:
+    - id: Включение света в спальне
+      alias: light_turn_bedroom
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: sensor.0x54ef4410001c6abf_action
+          to: single_left
+      action:
+        - service: light.toggle
+          entity_id:
+            - light.yeelight_07_ceiling
+          data:
+            brightness_pct: 100
+            kelvin: 4000
+
+    - id: Выключение света в квартире из спальни
+      alias: light_turn_off_from_bedroom
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: sensor.0x54ef4410001c6abf_action
+          to: single_right
+      action:
+        - service: light.turn_off
+          entity_id:
+            - light.yeelight_04_ceiling
+            - light.yeelight_04_ceiling_ambilight
+            - light.yeelight_04_ceiling_nightlight
+            - light.yeelight_05_ceiling
+            - light.yeelight_05_ceiling_ambilight
+            - light.yeelight_05_ceiling_nightlight
+            - light.yeelight_06_ceiling
+            - light.yeelight_06_ceiling_ambilight
+            - light.yeelight_06_ceiling_nightlight
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.garland_power
+        - service: remote.send_command
+          target:
+            entity_id: remote.rm4_pro_remote
+          data:
+            device: garland
+            command: power_off
+
+    - id: Перезагрузка люстры в спальне
+      alias: light_unvaliable_br_reboot
+      initial_state: true
+      trigger:
+        - platform: time_pattern
+          minutes: "/5"
+      condition:
+        - condition: state
+          entity_id: binary_sensor.br_ceiling_unavailable
+          state: "on"
+      action:
+        - service: switch.turn_off
+          entity_id:
+            - switch.0x54ef4410001c6abf_left
+            - switch.0x54ef4410001c6abf_right
+        - delay: 00:00:05
+        - service: switch.turn_on
+          entity_id:
+            - switch.0x54ef4410001c6abf_left
+            - switch.0x54ef4410001c6abf_right

@@ -1,0 +1,242 @@
+vacuum_cleaner:
+  template:
+    - sensor:
+        - name: sensor.roborock_vacuum_m1s_current_clean_duration_custom
+          state: "{{ (states('sensor.roborock_vacuum_m1s_current_clean_duration') | float(0) / 60) | round(1) }}"
+
+  camera:
+    - platform: xiaomi_cloud_map_extractor
+      host: 192.168.1.65
+      token: !secret vacuum_token
+      username: !secret mi_home_login
+      password: !secret mi_home_pass
+      scan_interval: 10
+      draw:
+        - charger
+        - cleaned_area
+        - goto_path
+        # - ignored_obstacles_with_photo
+        - ignored_obstacles
+        # - no_go_zones
+        - no_mopping_zones
+        # - obstacles_with_photo
+        - obstacles
+        - path
+        - predicted_path
+        # - room_names
+        - vacuum_position
+        - virtual_walls
+        # - zones
+      # country: cn
+      room_colors:
+        16: [0, 153, 0]
+        18: [153, 0, 51]
+        19: [204, 102, 153]
+        21: [51, 102, 255]
+        17: [0, 51, 102]
+        20: [51, 51, 153]
+
+      colors:
+        color_map_inside: [0, 0, 0]
+        color_map_outside: [5, 0, 0]
+        color_map_wall: [0, 0, 0]
+        color_map_wall_v2: [0, 0, 0]
+        color_grey_wall: [93, 109, 126, 0]
+        color_path: [255, 255, 255]
+        color_goto_path: [0, 0, 0]
+        color_predicted_path: [255, 255, 0, 0]
+        color_zones: [0xAD, 0xD8, 0xFF, 0]
+        color_zones_outline: [0xAD, 0xD8, 0xFF, 0]
+        color_virtual_walls: [255, 0, 0, 0]
+        color_no_go_zones: [255, 33, 55, 100]
+        color_no_go_zones_outline: [255, 0, 0, 120]
+        color_no_mop_zones: [163, 130, 211, 0]
+        color_no_mop_zones_outline: [163, 130, 211, 0]
+        color_charger: [204, 204, 204]
+        color_robo: [255, 255, 255]
+        color_unknown: [0, 0, 0]
+        color_scan: [0xDF, 0xDF, 0xDF, 0]
+      map_transformation:
+        scale: 7
+        rotate: 0
+        trim:
+          top: 25
+          bottom: 22
+          left: 25
+          right: 25
+      auto_update: true
+      sizes:
+        vacuum_radius: 22
+        charger_radius: 22
+        path_width: 4
+        obstacle_radius: 19
+      attributes:
+        - calibration_points
+
+  script:
+    vacuum_start:
+      alias: "Начать уборку"
+      sequence:
+        - service: vacuum.start
+          data:
+            entity_id: vacuum.roborock_vacuum_m1s
+
+    vacuum_return_to_dock:
+      alias: "Возвращение домой"
+      icon: mdi:garage-variant
+      sequence:
+        - service: vacuum.return_to_base
+          data:
+            entity_id: vacuum.roborock_vacuum_m1s
+
+    ############################################# Зональная #############################################
+
+    vacuum_clean_sofa:
+      alias: "Уборка возле дивана"
+      sequence:
+        - service: xiaomi_miio.vacuum_clean_zone
+          target:
+            entity_id: vacuum.roborock_vacuum_m1s
+          data:
+            repeats: 1
+            zone:
+              - [23913, 22511, 27213, 24761]
+
+    vacuum_clean_kitchen_table:
+      alias: "Уборка на кухне возле стола"
+      sequence:
+        - service: xiaomi_miio.vacuum_clean_zone
+          target:
+            entity_id: vacuum.roborock_vacuum_m1s
+          data:
+            repeats: 1
+            zone:
+              - [23816, 21206, 27116, 22506]
+    ############################################# Комнаты #############################################
+
+    vacuum_clean_living:
+      alias: "Уборка в гостиной"
+      sequence:
+        - service: xiaomi_miio.vacuum_clean_zone
+          target:
+            entity_id: vacuum.roborock_vacuum_m1s
+          data:
+            repeats: 1
+            zone:
+              - [21749, 22495, 27249, 25845]
+
+    vacuum_clean_corridor:
+      alias: "Уборка в коридоре"
+      sequence:
+        - service: xiaomi_miio.vacuum_clean_zone
+          target:
+            entity_id: vacuum.roborock_vacuum_m1s
+          data:
+            repeats: 1
+            zone:
+              - [19918, 22178, 21818, 25928]
+              - [20043, 20699, 23093, 22299]
+              - [21927, 18709, 23127, 20709]
+
+    vacuum_clean_bedroom:
+      alias: "Уборка в cпальне"
+      sequence:
+        - service: xiaomi_miio.vacuum_clean_zone
+          target:
+            entity_id: vacuum.roborock_vacuum_m1s
+          data:
+            repeats: 1
+            zone:
+              - [21906, 15279, 26106, 18679]
+
+    vacuum_clean_kitchen:
+      alias: "Уборка на кухне"
+      sequence:
+        - service: xiaomi_miio.vacuum_clean_zone
+          target:
+            entity_id: vacuum.roborock_vacuum_m1s
+          data:
+            repeats: 1
+            zone:
+              - [23141, 18930, 27241, 22530]
+
+  automation:
+    - id: Уборка в гостиной
+      alias: vacuum_clean_living_room
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_button.vacuum_clean_living_room
+      action:
+        - service: script.turn_on
+          entity_id: script.vacuum_clean_living
+
+    - id: Уборка в гостиной возле дивана
+      alias: vacuum_clean_living_room_sofa
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_button.vacuum_clean_sofa
+      action:
+        - service: script.turn_on
+          entity_id: script.vacuum_clean_sofa
+
+    - id: Уборка на кухне
+      alias: vacuum_clean_kitchen
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_button.vacuum_clean_kitchen
+      action:
+        - service: script.turn_on
+          entity_id: script.vacuum_clean_kitchen
+
+    - id: Уборка на кухне возле стола
+      alias: vacuum_clean_kitchen_table
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_button.vacuum_clean_kitchen_table
+      action:
+        - service: script.turn_on
+          entity_id: script.vacuum_clean_kitchen_table
+
+    - id: Уборка в спальне
+      alias: vacuum_clean_bedroom
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_button.vacuum_clean_bedroom
+      action:
+        - service: script.turn_on
+          entity_id: script.vacuum_clean_bedroom
+
+    - id: Уборка в квартире
+      alias: vacuum_clean_full
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_button.vacuum_start
+      action:
+        - service: vacuum.start
+          entity_id: vacuum.roborock_vacuum_m1s
+
+    - id: Возврат домой
+      alias: vacuum_return_to_base
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_button.vacuum_return_to_base
+      action:
+        - service: vacuum.return_to_base
+          entity_id: vacuum.roborock_vacuum_m1s
+
+    - id: Уборка в коридоре
+      alias: vacuum_vacuum_clean_corridor
+      initial_state: true
+      trigger:
+        - platform: state
+          entity_id: input_button.vacuum_clean_corridor
+      action:
+        - service: script.vacuum_clean_corridor
+          entity_id: vacuum.roborock_vacuum_m1s

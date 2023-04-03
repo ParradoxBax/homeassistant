@@ -1,0 +1,133 @@
+########################### Спальня #############################
+kitchen:
+
+  homeassistant:
+    customize:
+
+    binary_sensor.kn_ceiling_unavailable:
+      friendly_name: Состояние люстры
+    input_button.vacuum_clean_kitchen:
+      friendly_name: Пропылесосить на кухне
+    input_button.vacuum_clean_kitchen_table:
+      friendly_name: Пропылесосить на кухне у стола
+
+  template:
+
+    - binary_sensor:
+
+      - name: kn_ceiling_unavailable
+        state: >
+          {{ is_state('light.yeelight_06_ceiling', 'unavailable') }}
+        delay_on: 
+            minutes: 3
+        device_class: problem
+        icon: >
+          {% if is_state("binary_sensor.kn_ceiling_unavailable", "on") %}
+          mdi:ceiling-light-outline
+          {% else %}
+          mdi:ceiling-light
+          {% endif %}
+
+  automation:
+
+  - id: Включение света на кухне
+    alias: light_turn_kitchen
+    initial_state: true
+    trigger: 
+    - platform: state
+      entity_id: sensor.0x54ef4410001c98e1_action
+      to: single_left
+    action:
+    - service: light.toggle
+      entity_id: 
+      - light.yeelight_06_ceiling
+      data:
+        brightness_pct: 100
+        kelvin: 4000
+    
+  - id: Выключение света в квартире с кухни
+    alias: light_turn_off_from_kitchen
+    initial_state: true
+    trigger: 
+    - platform: state
+      entity_id: sensor.0x54ef4410001c98e1_action
+      to: double_right
+    action:
+    - service: light.turn_off
+      entity_id: 
+      - light.yeelight_04_ceiling
+      - light.yeelight_04_ceiling_ambilight
+      - light.yeelight_04_ceiling_nightlight
+      - light.yeelight_05_ceiling
+      - light.yeelight_05_ceiling_ambilight
+      - light.yeelight_05_ceiling_nightlight
+      - light.yeelight_06_ceiling
+      - light.yeelight_06_ceiling_ambilight
+      - light.yeelight_06_ceiling_nightlight
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.garland_power
+    - service: remote.send_command
+      target:
+        entity_id: remote.rm4_pro_remote
+      data:
+        device: garland
+        command: power_off
+
+  - id: Управление гирлянддой с кухни Aqara H1
+    alias: garland_aqara_kn
+    initial_state: true
+    trigger: 
+    - platform: state
+      entity_id: sensor.0x54ef4410001c98e1_action
+      to: single_right
+    action:
+    - choose:
+      - conditions:
+        - condition: state
+          entity_id: "input_boolean.garland_power_living"
+          state: "off"
+        sequence:
+        - service: remote.send_command
+          target:
+            entity_id: remote.rm4_pro_remote
+          data:
+            device: garland
+            command: power_on
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.garland_power_living
+      - conditions:
+        - condition: state
+          entity_id: input_boolean.garland_power_living
+          state: "on"
+        sequence:
+        - service: remote.send_command
+          target:
+            entity_id: remote.rm4_pro_remote
+          data:
+            device: garland
+            command: power_off
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.garland_power_living
+    
+  - id: Перезагрузка люстры на кухне
+    alias: light_unvaliable_kn_reboot
+    initial_state: true
+    trigger: 
+    - platform: time_pattern
+      minutes: '/5'
+    condition:
+    - condition: state
+      entity_id: binary_sensor.kn_ceiling_unavailable
+      state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: 
+        - switch.0x54ef4410001c98e1_left
+        - switch.0x54ef4410001c98e1_right
+      - delay: 00:00:05
+      - service: switch.turn_on
+        entity_id:
+        - switch.0x54ef4410001c98e1_left
+        - switch.0x54ef4410001c98e1_right
+
+ 

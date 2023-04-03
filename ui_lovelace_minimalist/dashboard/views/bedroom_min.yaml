@@ -1,0 +1,89 @@
+title: Спальня
+path: "bedroom_min"
+cards:
+
+  - type: 'custom:button-card'
+    template: chip_back
+    variables:
+      ulm_chip_back_path: home
+
+  - type: vertical-stack
+    cards:
+
+    - type: 'custom:button-card'
+      template: card_title
+      name: Музыка
+
+    - type: custom:mini-media-player
+      entity: media_player.yandex_station_ff98f0294e9c0d00a03f3b8a
+      icon: mdi:spotify
+      artwork: cover
+      sound_mode: full
+      hide:
+        # volume: true
+        source: true
+        power: true
+        power_state: true
+
+    - type: horizontal-stack
+      cards:
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_07_ceiling
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Свет
+
+
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_07_ceiling_ambilight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ambilight
+
+    - type: vertical-stack
+      cards:
+      - type: "custom:button-card"
+        template: card_light
+        entity: light.yeelight_07_ceiling_nightlight
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup: true
+          ulm_card_light_force_background_color: true
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_name: Ночник
+
+  - type: 'custom:button-card'
+    template: card_title
+    name: Пылесос
+      
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: picture-glance
+        show_name: false
+        camera_image: camera.xiaomi_cloud_map_extractor
+        entities:
+        - entity: input_button.vacuum_clean_bedroom
+          tap_action:
+            action: call-service
+            service: input_button.press
+            service_data:
+              entity_id: input_button.vacuum_clean_bedroom
+        - entity: script.vacuum_return_to_dock
+          tap_action:
+            action: call-service
+            service: script.turn_on
+            service_data:
+              entity_id: script.vacuum_return_to_dock

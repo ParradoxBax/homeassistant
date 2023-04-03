@@ -1,0 +1,178 @@
+title: Гостиная
+icon: mdi:television
+cards:
+  ##################################### 1 столбец
+  - type: vertical-stack
+    cards:
+      - type: custom:mini-media-player
+        entity: media_player.yandex_station_u00hyg000qvrbk
+        icon: mdi:spotify
+        artwork: full-cover
+        sound_mode: icon
+        hide:
+          source: true
+          power: true
+          power_state: true
+
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: custom:mini-media-player
+            entity: media_player.lg_webos_tv_oled65c1rla
+            icon: mdi:spotify
+            artwork: cover
+            sound_mode: full
+            toggle_power: false
+            hide:
+              volume: true
+              source: true
+              power: true
+              power_state: true
+            shortcuts:
+              hide_when_off: true
+              columns: 4
+              buttons:
+                - icon: mdi:sony-playstation
+                  type: source
+                  id: PlayStation # Where XXXXXXX is your User ID
+                - icon: mdi:android
+                  type: source
+                  id: SHIELD # Where XXXXXXX is your User ID
+
+          - type: custom:mini-media-player
+            entity: media_player.shield
+            icon: mdi:spotify
+            artwork: cover
+            sound_mode: icon
+            info: full
+            volume_stateless: true
+            hide:
+              # volume: true
+              source: true
+              power_state: false
+
+  ######################################## 2 столбец
+
+  - type: vertical-stack
+    cards:
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: light
+                entity: light.virtual_ceiling_living
+                name: Свет общий
+              - type: light
+                entity: light.virtual_ambilight_living
+                name: Ambilight общий
+              - type: light
+                entity: light.virtual_nightlight_living
+                name: Ночник общий
+
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                style: |
+                  ha-markdown {
+                    font-size: 18px;
+                  }
+                content: >
+                  **Первая люстра**
+          - type: horizontal-stack
+            cards:
+              - type: light
+                entity: light.yeelight_04_ceiling
+                name: Свет
+              - type: light
+                entity: light.yeelight_04_ceiling_ambilight
+                name: Ambilight
+              - type: light
+                entity: light.yeelight_04_ceiling_nightlight
+                name: Ночник
+          - type: markdown
+            style: |
+              ha-markdown {
+                font-size: 18px;
+              }
+            content: >
+              **Вторая люстра**
+          - type: horizontal-stack
+            cards:
+              - type: light
+                entity: light.yeelight_05_ceiling
+                name: Свет
+              - type: light
+                entity: light.yeelight_05_ceiling_ambilight
+                name: Ambilight
+              - type: light
+                entity: light.yeelight_05_ceiling_nightlight
+                name: Ночник
+
+          - type: horizontal-stack
+            cards:
+              - type: button
+                entity: input_button.garland_power_living
+                icon_height: 120px
+                icon: mdi:candelabra
+                name: Гирлянда
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.garland_power_living
+              - type: button
+                entity: input_button.light_film
+                icon_height: 120px
+                name: Подсветка кино
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.light_film
+              - type: button
+                entity: input_button.light_work
+                icon_height: 120px
+                name: Ноутбук
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.light_work
+
+          - type: entities
+            style: |
+              ha-card {
+                font-size: 18px;
+              }
+            entities:
+              - entity: binary_sensor.lr_garland_power
+                name: Гирлянда
+
+  ######################################## 3 столбец
+
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: picture-glance
+        show_name: false
+        camera_image: camera.xiaomi_cloud_map_extractor
+        entities:
+          - entity: input_button.vacuum_clean_living_room
+            tap_action:
+              action: call-service
+              service: input_button.press
+              service_data:
+                entity_id: input_button.vacuum_clean_living_room
+          - entity: input_button.vacuum_clean_sofa
+            tap_action:
+              action: call-service
+              service: input_button.press
+              service_data:
+                entity_id: input_button.vacuum_clean_sofa
+          - entity: script.vacuum_return_to_dock
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.vacuum_return_to_dock

@@ -1,0 +1,26 @@
+
+
+  light_switch_test_power_memory_off:
+    alias: Память питания выключено
+    sequence:
+      - service: localtuya.set_dp
+        data:
+          device_id: bf1c2426d13165b29ccyyx
+          dp: 38
+          value: "off"
+  light_switch_test_power_memory_on:
+    alias: Память питания включено
+    sequence:
+      - service: localtuya.set_dp
+        data:
+          device_id: bf1c2426d13165b29ccyyx
+          dp: 38
+          value: "on"
+  light_switch_test_power_memory_memory:
+    alias: Память питания memory
+    sequence:
+      - service: localtuya.set_dp
+        data:
+          device_id: bf1c2426d13165b29ccyyx
+          dp: 38
+          value: "memory"

@@ -1,0 +1,8 @@
+title: Home Assistant
+views:
+  - !include lovelace/01_system.yaml
+  - !include lovelace/02_light.yaml
+  - !include lovelace/03_vacuum.yaml
+  - !include lovelace/04_living.yaml
+  - !include lovelace/05_kitchen.yaml
+  - !include lovelace/06_bedroom.yaml

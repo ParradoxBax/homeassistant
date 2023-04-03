@@ -1,0 +1,23 @@
+
+  - name: Notebook
+    icon: "mdi:flower-tulip"
+    entities:
+      light.yeelight_04_ceiling_ambilight:
+        state: "on"
+        brightness: 36
+        color_mode: "rgb"
+        rgb_color: [255, 0, 255]
+
+  - name: Film
+    icon: "mdi:video-vintage"
+    entities:
+      light.yeelight_04_ceiling_ambilight:
+        state: "on"
+        color_mode: "rgb"
+        brightness_pct: 22
+        rgb_color: [191, 0, 255]
+      light.yeelight_05_ceiling_ambilight:
+        state: "on"
+        color_mode: "rgb"
+        brightness_pct: 22
+        rgb_color: [191, 0, 255]

@@ -1,0 +1,119 @@
+title: Спальня
+icon: mdi:bed-king-outline ####
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: markdown
+            style: |
+              ha-markdown {
+                font-size: 18px;
+              }
+            content: >
+              **Свет**
+
+          - type: horizontal-stack
+            cards:
+              - type: light
+                entity: light.yeelight_07_ceiling
+                name: Свет
+              - type: light
+                entity: light.yeelight_07_ceiling_ambilight
+                name: Ambilight
+              - type: light
+                entity: light.yeelight_07_ceiling_nightlight
+                name: Ночник
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - type: divider
+              - entity: binary_sensor.br_ceiling_unavailable
+                name: Состояние люстры
+
+  - type: vertical-stack
+    cards:
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: markdown
+            style: |
+              ha-markdown {
+                font-size: 18px;
+              }
+            content: >
+              **Музыка**
+
+          - type: custom:mini-media-player
+            entity: media_player.yandex_station_ff98f0294e9c0d00a03f3b8a
+            icon: mdi:spotify
+            artwork: full-cover
+            sound_mode: full
+            hide:
+              source: true
+              power: true
+              power_state: true
+
+  - type: vertical-stack
+    cards:
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: markdown
+            style: |
+              ha-markdown {
+                font-size: 18px;
+              }
+            content: >
+              **MI Air Purifier**
+
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: switch.mi_air_purifier_3c_buzzer
+                name: Buzzer
+              - entity: switch.mi_air_purifier_3c_child_lock
+                name: Детский замок
+              - entity: number.mi_air_purifier_3c_favorite_motor_speed
+                name: Заданная скорость
+              - entity: sensor.mi_air_purifier_3c_pm2_5
+                name: PM 2.5
+              - entity: sensor.mi_air_purifier_3c_filter_life_remaining
+                name: Остаток фильтра
+              - entity: number.mi_air_purifier_3c_led_brightness
+                name: Яркость подсветки
+                title: Mi Air Purifier 3C
+
+  - type: vertical-stack
+    cards:
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: markdown
+            style: |
+              ha-markdown {
+                font-size: 18px;
+              }
+            content: >
+              **Пылесос**
+
+          - type: custom:stack-in-card
+            mode: vertical
+            cards:
+              - type: picture-glance
+                show_name: false
+                camera_image: camera.xiaomi_cloud_map_extractor
+                entities:
+                  - entity: input_button.vacuum_clean_bedroom
+                    tap_action:
+                      action: call-service
+                      service: input_button.press
+                      service_data:
+                        entity_id: input_button.vacuum_clean_bedroom
+                  - entity: script.vacuum_return_to_dock
+                    tap_action:
+                      action: call-service
+                      service: script.turn_on
+                      service_data:
+                        entity_id: script.vacuum_return_to_dock

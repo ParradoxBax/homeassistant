@@ -1,0 +1,94 @@
+yandex_station:
+  automation:
+    - id: Алиса, звуки для сна
+      alias: goodnight_alice
+      initial_state: true
+      trigger:
+        - platform: event
+          event_type: yandex_intent
+          event_data:
+            text: Пора спать
+      action:
+        - choose:
+            - conditions:
+                - condition: state
+                  entity_id: light.yeelight_07_ceiling
+                  state: "on"
+              sequence:
+                - service: light.turn_off
+                  entity_id: light.yeelight_07_ceiling
+                - service: light.turn_on
+                  entity_id: light.yeelight_07_ceiling_ambilight
+                  data:
+                    effect: Sunset
+            - conditions:
+                - condition: state
+                  entity_id: light.yeelight_07_ceiling_nightlight
+                  state: "on"
+              sequence:
+                - service: light.turn_off
+                  entity_id: light.yeelight_07_ceiling_nightlight
+                - service: light.turn_on
+                  entity_id: light.yeelight_07_ceiling_ambilight
+                  data:
+                    effect: Sunset
+            - conditions:
+                - condition: state
+                  entity_id:
+                    - light.yeelight_07_ceiling_nightlight
+                    - light.yeelight_07_ceiling_ambilight
+                  state: "on"
+              sequence:
+                - service: light.turn_off
+                  entity_id:
+                    - light.yeelight_07_ceiling_nightlight
+                    - light.yeelight_07_ceiling_ambilight
+                - service: light.turn_on
+                  entity_id: light.yeelight_07_ceiling_ambilight
+                  data:
+                    effect: Sunset
+            - conditions:
+                - condition: state
+                  entity_id:
+                    - light.yeelight_07_ceiling
+                    - light.yeelight_07_ceiling_ambilight
+                    - light.yeelight_07_ceiling_nightlight
+                  state: "off"
+              sequence:
+                - service: light.turn_on
+                  entity_id: light.yeelight_07_ceiling_ambilight
+                  data:
+                    effect: Sunset
+        - service: media_player.volume_mute
+          target:
+            entity_id: "{{ trigger.event.data.entity_id }}"
+          data:
+            is_volume_muted: true
+        - delay: 00:00:02
+        - service: media_player.play_media
+          target:
+            entity_id: "{{ trigger.event.data.entity_id }}"
+          data:
+            media_content_id: Включи звуки дял сна
+            media_content_type: command
+        - delay: 00:00:02
+        - service: media_player.play_media
+          target:
+            entity_id: "{{ trigger.event.data.entity_id }}"
+          data:
+            media_content_id: Выключись через час
+            media_content_type: command
+        - delay: 00:00:05
+        - service: media_player.volume_mute
+          target:
+            entity_id: "{{ trigger.event.data.entity_id }}"
+          data:
+            is_volume_muted: false
+        - service: media_player.play_media
+          target:
+            entity_id: "{{ trigger.event.data.entity_id }}"
+          data:
+            media_content_id: <speaker is_whisper="true">Спокойной ночи
+            media_content_type: dialog
+            extra:
+              volume_level: 0.2

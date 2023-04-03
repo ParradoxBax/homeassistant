@@ -1,0 +1,345 @@
+title: Пылесос
+icon: mdi:robot-vacuum
+cards:
+  ####
+  - type: vertical-stack
+    cards:
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                style: |
+                  ha-markdown {
+                    font-size: 23px;
+                  }
+                content: >
+                  **Пылесос**
+
+              - type: horizontal-stack
+                cards:
+                  - type: entity-button
+                    entity: input_button.vacuum_start
+                    icon_height: 60px
+                    icon: mdi:robot-vacuum
+                    name: Уборка в квартире
+                    tap_action:
+                      action: call-service
+                      service: input_button.press
+                      service_data:
+                        entity_id: input_button.vacuum_start
+                  - type: entity-button
+                    entity: input_button.vacuum_return_to_base
+                    icon_height: 60px
+                    icon: mdi:garage-variant
+                    name: Возврат домой
+                    tap_action:
+                      action: call-service
+                      service: input_button.press
+                      service_data:
+                        entity_id: input_button.vacuum_return_to_base
+
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                style: |
+                  ha-markdown {
+                    font-size: 23px;
+                  }
+                content: >
+                  **Комнаты**
+
+          - type: horizontal-stack
+            cards:
+              - type: entity-button
+                entity: input_button.vacuum_clean_living_room
+                # icon_height: 80px
+                icon: mdi:television
+                name: Уборка в гостиной
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.vacuum_clean_living_room
+              - type: entity-button
+                entity: input_button.vacuum_clean_bedroom
+                # icon_height: 120px
+                icon: mdi:bed
+                name: Уборка в спальне
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.vacuum_clean_bedroom
+              - type: entity-button
+                entity: input_button.vacuum_clean_kitchen
+                # icon_height: 120px
+                icon: mdi:countertop
+                name: Уборка на кухне
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.vacuum_clean_kitchen
+              - type: entity-button
+                entity: input_button.vacuum_clean_corridor
+                # icon_height: 120px
+                icon: mdi:floor-plan
+                name: Уборка в коридоре
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.vacuum_clean_corridor
+
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                style: |
+                  ha-markdown {
+                    font-size: 23px;
+                  }
+                content: >
+                  **Зональная**
+
+          - type: horizontal-stack
+            cards:
+              - type: entity-button
+                entity: input_button.vacuum_clean_kitchen_table
+                icon_height: 60px
+                icon: mdi:table-chair
+                name: Уборка на кухне у стола
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.vacuum_clean_kitchen_table
+              - type: entity-button
+                entity: input_button.vacuum_clean_sofa
+                icon_height: 60px
+                icon: mdi:sofa
+                name: Уборка возле дивана
+                tap_action:
+                  action: call-service
+                  service: input_button.press
+                  service_data:
+                    entity_id: input_button.vacuum_clean_sofa
+
+    # - type: entities
+    #   show_header_toggle: false
+    #   entities:
+    #   - entity: script.vacuum_start
+    #     name: Полная уборка
+    #     icon: mdi:robot-vacuum
+    #   - entity: script.vacuum_return_to_dock
+    #   - type: divider
+    #   - entity: script.vacuum_clean_hillway
+    #     icon: mdi:broom
+    #   - entity: script.vacuum_clean_living
+    #     icon: mdi:television
+    #   - entity: script.vacuum_clean_kitchen
+    #     icon: mdi:countertop
+    #   - entity: script.vacuum_clean_bedroom
+    #     icon: mdi:bed
+    #   - type: divider
+    #   - entity: script.vacuum_clean_sofa
+    #     icon: mdi:sofa
+    #   - entity: script.vacuum_clean_kitchen_table
+    #     icon: mdi:table-chair
+
+  - type: custom:xiaomi-vacuum-map-card
+    entity: vacuum.roborock_vacuum_m1s
+    # title: Пылесосик
+    language: ru
+    map_source:
+      camera: camera.xiaomi_cloud_map_extractor
+    calibration_source:
+      camera: true
+    # debug: true
+    map_locked: true
+    two_finger_pan: true
+    append_tiles: true
+    tiles:
+      - entity: sensor.roborock_vacuum_m1s_current_clean_area
+        label: Убрана площадь
+        icon: mdi:texture-box
+        unit: " м²"
+      - entity: sensor.sensor_roborock_vacuum_m1s_current_clean_duration_custom
+        label: Длительность уборки
+        icon: mdi:timer-sand
+        unit: " мин"
+    map_modes:
+      - template: vacuum_clean_zone
+        name:
+          Зональная уборка
+
+          ######################## Зональная ########################
+      ######################## Диван в гостиной ########################
+      - template: vacuum_clean_zone_predefined
+        predefined_selections:
+          - zones:
+              - - 23948
+                - 22466
+                - 27213
+                - 24518
+            icon:
+              name: mdi:sofa
+              x: 25483
+              y: 23472
+          ######################## Стол на кухне ########################
+          - zones:
+              - - 23816
+                - 21206
+                - 27116
+                - 22506
+            icon:
+              name: mdi:table-chair
+              x: 25520
+              y:
+                21939
+
+                ######################### Комнаты ########################
+      ##################### Кухня ########################
+
+      - template: vacuum_clean_segment
+        predefined_selections:
+          - id: 16
+            outline:
+              - - 23800
+                - 22575
+              - - 23800
+                - 22276
+              - - 23127
+                - 22276
+              - - 23164
+                - 20667
+              - - 23164
+                - 18985
+              - - 27241
+                - 18947
+              - - 27023
+                - 22276
+              - - 25707
+                - 22276
+              - - 25707
+                - 22500
+              - - 23837
+                - 22537
+            icon:
+              name: "mdi:countertop"
+              x: 24625
+              y: 20525
+          ##################### Гардероб ########################
+          - id: 17
+          ##################### Коридор ########################
+          - id: 18
+            outline:
+              - - 21706
+                - 25903
+              - - 20285
+                - 25903
+              - - 20285
+                - 25454
+              - - 20060
+                - 25454
+              - - 20060
+                - 24819
+              - - 19948
+                - 24819
+              - - 19948
+                - 24744
+              - - 19911
+                - 24744
+              - - 19911
+                - 23996
+              - - 20060
+                - 23996
+              - - 20060
+                - 20705
+              - - 21930
+                - 20705
+              - - 21930
+                - 18872
+              - - 22790
+                - 18872
+              - - 22790
+                - 18947
+              - - 22865
+                - 18947
+              - - 22865
+                - 19022
+              - - 23127
+                - 19022
+              - - 23127
+                - 22313
+              - - 21743
+                - 22313
+              - - 21780
+                - 25903
+              - - 21706
+                - 25903
+            icon:
+              name: "mdi:broom"
+              x: 21182
+              y: 21640
+          ##################### Спальня ########################
+          - id: 19
+            outline:
+              - - 21967
+                - 18872
+              - - 22753
+                - 18872
+              - - 22753
+                - 18648
+              - - 25857
+                - 18648
+              - - 25857
+                - 18424
+              - - 25879
+                - 18381
+              - - 26110
+                - 18381
+              - - 26119
+                - 17676
+              - - 26081
+                - 17638
+              - - 25894
+                - 17601
+              - - 25932
+                - 15357
+              - - 21930
+                - 15282
+              - - 21930
+                - 17376
+              - - 21967
+                - 18872
+            icon:
+              name: "mdi:bed"
+              x: 24600
+              y: 17150
+          ##################### Ванная ########################
+          - id: 20
+          ##################### Гостинная ########################
+          - id: 21
+            outline:
+              - - 21750
+                - 22500
+              - - 21750
+                - 25850
+              - - 27150
+                - 25850
+              - - 27150
+                - 22500
+            icon:
+              name: "mdi:television"
+              x: 24450
+              y: 24175
+      - template: vacuum_goto
+      - template: vacuum_follow_path

@@ -1,0 +1,12 @@
+.ssh
+.vscode
+.storage
+.cloud
+.google.token
+home-assistant.log*
+home-assistant*.db
+id_rsa*
+zigbee2mqtt/
+secrets.yaml
+tts/
+

@@ -1,0 +1,90 @@
+homeassistant:
+
+  name: Home
+  latitude: !secret homeassistant_latitude
+  longitude: !secret homeassistant_longitude
+  country: !secret country
+
+
+  elevation: 270
+  unit_system: metric
+
+  time_zone: !secret time_zone
+
+  # Customization file
+  customize: !include_dir_merge_named includes/customize
+  packages: !include_dir_merge_named includes/packages
+
+# Loads default set of integrations. Do not remove.
+#default_config:
+
+frontend:
+  themes: !include_dir_merge_named themes
+  # your configuration.
+
+history:
+
+# Включение поддержки приложения
+mobile_app:
+
+browser_mod:
+
+#Сканирование доступных устройств в сети
+ssdp:
+
+# Отслеживание солнца
+sun:
+
+input_button:
+input_boolean:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+lovelace:
+  mode: yaml
+  resources:
+  - url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js
+    type: module
+  - url: /hacsfiles/vacuum-card/vacuum-card.js
+    type: module
+  - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+    type: module
+  - url: /hacsfiles/lovelace-card-mod/card-mod.js
+    type: module
+  - url: /hacsfiles/stack-in-card/stack-in-card.js
+    type: module
+  - url: /hacsfiles/lovelace-multiple-entity-row/multiple-entity-row.js
+    type: module
+  - url: /hacsfiles/lovelace-mushroom/mushroom.js
+    type: module
+  - url: /hacsfiles/kiosk-mode/kiosk-mode.js
+    type: module
+  - url: /hacsfiles/button-card/button-card.js
+    type: module
+  - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
+    type: module
+  - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
+    type: module
+  - url: /hacsfiles/light-entity-card/light-entity-card.js
+    type: module
+  - url: /hacsfiles/simple-weather-card/simple-weather-card-bundle.js
+    type: module
+  - url: /hacsfiles/my-cards/my-cards.js
+    type: module
+  - url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
+    type: module
+  - url: /browser_mod.js
+    type: module
+
+## Вынос во внешние папки
+# sensor: !include_dir_merge_list includes/sensor
+
+## Вынос во внешние файлы
+script: !include includes/scripts.yaml
+yeelight: !include includes/yeelight.yaml
+recorder: !include includes/recorder.yaml
+yandex_smart_home: !include includes/yandex_smart_home.yaml
+yandex_station_intents: !include includes/yandex_station_intents.yaml
+scene: !include includes/scene.yaml

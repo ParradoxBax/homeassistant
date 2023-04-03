@@ -1,0 +1,271 @@
+title: Система
+icon: mdi:home-assistant
+cards:
+  ###########################################################################################
+  - type: custom:stack-in-card
+    cards:
+      - type: markdown
+        style: |
+          ha-card {
+            font-size: 26px;
+          }
+        content: >
+          **Погода**
+      - type: weather-forecast
+        style: |
+          ha-card {
+
+          }
+        entity: weather.openweathermap
+
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            style: |
+              ha-markdown {
+                font-size: 26px;
+              }
+            content: >
+              **Текущее состояние**
+
+          - type: entities
+            style: |
+              ha-card {
+                font-size: 15px;
+              }
+            show_header_toggle: false
+            entities:
+              - entity: sensor.time
+                type: custom:multiple-entity-row
+                name: Дата
+                state_header: Время!
+                icon: mdi:calendar-clock
+                entities:
+                  - entity: sensor.date
+                    name:
+              - entity: sensor.wan_ip
+                type: custom:multiple-entity-row
+                name: Интернет
+                state_header: IP
+                icon: mdi:web
+                entities:
+                  - entity: binary_sensor.internet_state
+                    name: Home Assistant
+              - entity: sensor.last_boot_custom
+                type: custom:multiple-entity-row
+                name: Время работы
+                state_header: Raspreby Pi
+                icon: mdi:timer-sand-full
+                entities:
+                  - entity: sensor.online_custom
+                    name: Home Assistant
+              # - type: divider
+          - type: markdown
+            style: |
+              ha-markdown {
+                font-size: 26px;
+              }
+            content: >
+              **Бэкап**
+
+          - type: entities
+            style: |
+              ha-card {
+                font-size: 15px;
+              }
+            show_header_toggle: false
+            entities:
+              - entity: sensor.last_google_backup
+              - entity: sensor.backups_in_google_drive
+                type: custom:multiple-entity-row
+                name: Резервные копии
+                state_header: Google Drive
+                icon: mdi:cloud-upload
+                entities:
+                  - entity: sensor.backups_in_home_assistant
+                    name: Raspreby Pi
+              - entity: sensor.size_backup_in_google_drive
+                type: custom:multiple-entity-row
+                name: Размер резервных копий
+                state_header: Google Drive
+                entities:
+                  - entity: sensor.size_backup_in_home_assistant
+                    name: Home Assistant
+              - type: divider
+              - type: call-service
+                icon: mdi:database-minus
+                name: База данных
+                action_name: Сжать
+                service: recorder.purge
+                service_data:
+                  keep_days: 7
+                  repack: true
+
+    ###################################################################################################
+
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                style: |
+                  ha-markdown {
+                    font-size: 26px;
+                      }
+                content: >
+                  **Нагрузка на Raspberry PI**
+
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.processor_use
+                color_thresholds:
+                  - value: 20
+                    color: "#008C4F"
+                  - value: 40
+                    color: "#98FB98"
+                  - value: 60
+                    color: "#FFFF00"
+                  - value: 80
+                    color: "#FF8C00"
+                  - value: 100
+                    color: "#DC143C"
+                animate: true
+                hour24: true
+                points_per_hour: 6
+                group_by: hour
+                hours_to_show: 12
+                line_width: 3
+
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.processor_temperature
+                color_thresholds:
+                  - value: 20
+                    color: "#008C4F"
+                  - value: 40
+                    color: "#98FB98"
+                  - value: 60
+                    color: "#FFFF00"
+                  - value: 80
+                    color: "#FF8C00"
+                  - value: 100
+                    color: "#DC143C"
+                animate: true
+                hour24: true
+                points_per_hour: 6
+                group_by: hour
+                hours_to_show: 12
+                line_width: 3
+
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.memory_use_percent
+                color_thresholds:
+                  - value: 20
+                    color: "#008C4F"
+                  - value: 40
+                    color: "#98FB98"
+                  - value: 60
+                    color: "#FFFF00"
+                  - value: 80
+                    color: "#FF8C00"
+                  - value: 100
+                    color: "#DC143C"
+                animate: true
+                hour24: true
+                points_per_hour: 6
+                group_by: hour
+                hours_to_show: 12
+                line_width: 3
+
+  ###########################################################################
+
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                style: |
+                  ha-markdown {
+                    font-size: 26px;
+                      }
+                content: >
+                  **Диск и  База данных**
+
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.disk_use_percent
+                color_thresholds:
+                  - value: 20
+                    color: "#008C4F"
+                  - value: 40
+                    color: "#98FB98"
+                  - value: 60
+                    color: "#FFFF00"
+                  - value: 80
+                    color: "#FF8C00"
+                  - value: 100
+                    color: "#DC143C"
+                animate: true
+                hour24: true
+                lower_bound: 0
+                upper_bound: 100
+                points_per_hour: 6
+                group_by: hour
+                hours_to_show: 12
+                line_width: 3
+
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.disk_free
+                color_thresholds:
+                  - value: 16
+                    color: "#DC143C"
+                  - value: 32
+                    color: "#FF8C00"
+                  - value: 48
+                    color: "#98FB98"
+                  - value: 55
+                    color: "#008C4F"
+                animate: true
+                hour24: true
+                points_per_hour: 6
+                lower_bound: 64
+                upper_bound: 0
+                group_by: hour
+                hours_to_show: 12
+                line_width: 3
+
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.maria_db_size
+                color_thresholds:
+                  - value: 0
+                    color: "#008C4F"
+                  - value: 20
+                    color: "#98FB98"
+                  - value: 40
+                    color: "#FFFF00"
+                  - value: 60
+                    color: "#FF8C00"
+                  - value: 100
+                    color: "#DC143C"
+                animate: true
+                hour24: true
+                points_per_hour: 6
+                group_by: hour
+                hours_to_show: 12
+                line_width: 3
+                lower_bound: 0
+                upper_bound: 300
+
+      #####################################################################################

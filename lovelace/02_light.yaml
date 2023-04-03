@@ -1,0 +1,204 @@
+title: Свет
+icon: mdi:lightbulb-group
+cards:
+
+  - type: custom:stack-in-card
+    mode: vertical 
+    cards:
+      - type: vertical-stack
+        cards:      
+          - type: vertical-stack
+            cards:
+            - type: markdown
+              style:  |
+                  ha-markdown {
+                    font-size: 18px;
+                  }   
+              content: >
+                  **Коридор**    
+
+            - type: horizontal-stack
+              cards:
+                - type: light
+                  entity: light.yeelight_01_ceiling
+                - type: light
+                  entity: light.yeelight_02_ceiling
+                - type: light
+                  entity: light.yeelight_03_ceiling
+            - type: horizontal-stack
+              cards:
+                - type: light
+                  entity: light.yeelight_01_ceiling_nightlight
+                  name: Ночник               
+                - type: light
+                  entity: light.yeelight_02_ceiling_nightlight    
+                  name: Ночник                 
+                - type: light
+                  entity: light.yeelight_03_ceiling_nightlight
+                  name: Ночник               
+
+  - type: custom:stack-in-card
+    mode: vertical 
+    cards:
+      - type: vertical-stack
+        cards:
+
+          - type: vertical-stack
+            cards:
+            
+            - type: markdown
+              style:  |
+                  ha-markdown {
+                    font-size: 18px;
+                  }   
+              content: >
+                  **Гостиная**    
+            - type: horizontal-stack
+              cards:
+                - type: light
+                  entity: light.yeelight_04_ceiling
+                  name: Люстра в гостиной 1
+                  hold_action:
+                    action: fire-dom-event
+                    browser_mod:
+                      command: "popup"
+                      large: false
+                      hide_header: false
+                      card:
+                        type: custom:light-entity-card
+                        entity: light.yeelight_04_ceiling
+                        hide_header: false
+                - type: light
+                  entity: light.yeelight_04_ceiling_ambilight
+                  name: Ambiligth в гостиной 1
+                  hold_action:
+                    action: fire-dom-event
+                    browser_mod:
+                      command: "popup"
+                      title: Ambiligth
+                      large: false
+                      # hide_header: true
+                      card:
+                        type: custom:light-entity-card
+                        entity: light.yeelight_04_ceiling_ambilight
+                        hide_header: true
+                        child_card: true
+                        # shorten_cards: true
+
+                - type: light
+                  entity: light.yeelight_04_ceiling_nightlight
+                  name: Ночник в гостиной 1
+                
+            - type: horizontal-stack
+              cards:
+                - type: light
+                  entity: light.yeelight_05_ceiling
+                  name: Люстра в гостиной 2
+                - type: light
+                  entity: light.yeelight_05_ceiling_ambilight
+                  name: Ambiligth в гостиной 2
+                  hold_action:
+                    action: fire-dom-event
+                    browser_mod:
+                      command: "popup"
+                      title: Ambiligth
+                      large: false
+                      # hide_header: true
+                      card:
+                        type: custom:light-entity-card
+                        entity: light.yeelight_05_ceiling_ambilight
+                        hide_header: true
+                        child_card: true
+                - type: light
+                  entity: light.yeelight_05_ceiling_nightlight
+                  name: Ночник в гостиной 2
+              
+            - type: entity-button
+              entity: input_button.garland_power_living
+              icon_height: 120px
+              icon: mdi:candelabra
+              name: Гирлянда
+              tap_action:
+                action: call-service
+                service: input_button.press
+                service_data:
+                  entity_id: input_button.garland_power_living
+            - type: entities
+              style:  |
+                ha-card {
+                  font-size: 18px;
+                } 
+              entities:
+              - entity: binary_sensor.lr_garland_power
+                name: Гирлянда
+
+  - type: custom:stack-in-card
+    mode: vertical 
+    cards:
+      - type: vertical-stack
+        cards:
+
+          - type: vertical-stack
+            cards:
+            
+            - type: markdown
+              style:  |
+                  ha-markdown {
+                    font-size: 18px;
+                  }   
+              content: >
+                  **Кухня**    
+                  
+            - type: horizontal-stack
+              cards:
+                - type: light
+                  entity: light.yeelight_06_ceiling
+                  name: Люстра на кухне
+                - type: light
+                  entity: light.yeelight_06_ceiling_ambilight
+                  name: Ambiligth на кухне
+                - type: light
+                  entity: light.yeelight_06_ceiling_nightlight
+                  name: Ночник на кухне
+                
+            - type: entity-button
+              entity: input_button.garland_power_living
+              icon_height: 120px
+              icon: mdi:candelabra
+              name: Гирлянда
+              tap_action:
+                action: call-service
+                service: input_button.press
+                service_data:
+                  entity_id: input_button.garland_power_living
+            - type: entities
+              style:  |
+                ha-card {
+                  font-size: 18px;
+                } 
+              entities:
+              - entity: binary_sensor.lr_garland_power
+                name: Гирлянда
+                  
+            - type: markdown
+              style:  |
+                  ha-markdown {
+                    font-size: 18px;
+                  }   
+              content: >
+                  **Спальня**    
+                
+            - type: horizontal-stack
+              cards:
+                - type: light
+                  entity: light.yeelight_07_ceiling
+                  name: Люстра в спальне
+                - type: light
+                  entity: light.yeelight_07_ceiling_ambilight
+                  name: Ambiligth в спальне
+                - type: light
+                  entity: light.yeelight_07_ceiling_nightlight
+                  name: Ночник в спальне
+
+
+

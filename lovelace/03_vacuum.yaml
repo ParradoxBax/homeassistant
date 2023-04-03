@@ -1,7 +1,6 @@
 title: Пылесос
 icon: mdi:robot-vacuum
 cards:
-  ####
   - type: vertical-stack
     cards:
       - type: custom:stack-in-card

@@ -15,7 +15,7 @@ cards:
                   }
                 content: >
                   **Коридор**
-
+              ##########
               - type: horizontal-stack
                 cards:
                   - type: light

@@ -1,7 +1,6 @@
 title: Свет
 icon: mdi:lightbulb-group
 cards:
-  #####################
   - type: custom:stack-in-card
     mode: vertical
     cards:
